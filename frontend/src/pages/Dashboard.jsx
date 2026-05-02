@@ -21,7 +21,7 @@ export default function Dashboard() {
     setLoading(true);
     setSelectedMovie(null);
     try {
-      const res = await axios.get(`http://localhost:5001/api/movies/search?q=${encodeURIComponent(query)}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/movies/search?q=${encodeURIComponent(query)}`);
       
       if (res.data.imdbID) {
         setSelectedMovie(res.data);
