@@ -204,6 +204,89 @@ body {
 }
 .dl-mini:hover { background: #e50914; color: #fff; }
 
+.server-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #aaa;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.server-selector select {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+}
+
+.server-selector select:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.server-selector select option {
+  background: #141414;
+  color: #fff;
+}
+
+/* PLAYER PROTECTION OVERLAY */
+.video-wrapper-full {
+  position: relative;
+}
+
+.player-protection-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(15px);
+  z-index: 1005;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.player-protection-overlay:hover {
+  background: rgba(0,0,0,0.75);
+}
+
+.protection-content {
+  text-align: center;
+  color: #fff;
+  animation: float 3s ease-in-out infinite;
+}
+
+.play-icon-large {
+  font-size: 80px;
+  color: #e50914;
+  margin-bottom: 20px;
+  text-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
+}
+
+.protection-content h3 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.protection-content p {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
 .player-v2.animate-fade-in {
   width: 100%;
   height: 100%;

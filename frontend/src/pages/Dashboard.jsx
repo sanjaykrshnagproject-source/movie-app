@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -37,15 +37,39 @@ export default function Dashboard() {
   };
 
   const getEmbedUrl = (imdbID) => {
-    // 🚀 Most reliable standard movie server
-    return `https://vidsrc.to/embed/movie/${imdbID}`;
+    // 🚀 vidsrc.pm is currently the most reliable and up-to-date server globally
+    return `https://vidsrc.pm/embed/movie/${imdbID}?autoPlay=1`;
   };
 
-  const handleDownload = () => {
-    if (!selectedMovie) return;
-    const downloadUrl = `https://vidsrc.me/download/${selectedMovie.imdbID}`;
-    window.open(downloadUrl, "_blank");
-  };
+  // 🛡️ ULTIMATE SHIELD: Force-block any attempt to redirect the page
+  useEffect(() => {
+    if (selectedMovie) {
+      // Create a history entry to trap redirects
+      window.history.pushState(null, null, window.location.href);
+      
+      const handleBeforeUnload = (e) => {
+        // This triggers the "Leave site?" popup which blocks malicious redirects
+        const message = "Ad detected! Click 'Stay' or 'Cancel' to continue watching your movie.";
+        e.preventDefault();
+        e.returnValue = message;
+        return message;
+      };
+
+      const handlePopState = () => {
+        // Prevent back-button redirects used by some ad scripts
+        window.history.pushState(null, null, window.location.href);
+      };
+
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      window.addEventListener("popstate", handlePopState);
+      
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }
+  }, [selectedMovie]);
+
 
   return (
     <div className={`dashboard-v2 ${selectedMovie ? "playing-mode" : ""}`}>
@@ -85,7 +109,6 @@ export default function Dashboard() {
                <button className="back-btn-circle" onClick={() => setSelectedMovie(null)} title="Back to Search">✕</button>
                <div className="player-info-mini">
                   <h2>{selectedMovie.title}</h2>
-                  <button className="dl-mini" onClick={handleDownload}>⬇ Download</button>
                </div>
             </div>
             <div className="video-wrapper-full">
@@ -95,6 +118,7 @@ export default function Dashboard() {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
+                referrerPolicy="no-referrer"
               ></iframe>
             </div>
           </div>
